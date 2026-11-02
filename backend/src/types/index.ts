@@ -115,3 +115,4 @@ export interface ExecutiveDashboardKPIs {
     pedidos: number;
   }>;
 }
+

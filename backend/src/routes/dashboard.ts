@@ -12,3 +12,4 @@ dashboardRouter.get('/', async (_req: Request, res: Response) => {
     res.status(500).json({ error: 'Erro ao carregar indicadores executivos', details: err.message });
   }
 });
+

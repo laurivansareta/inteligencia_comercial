@@ -45,3 +45,4 @@ modelsRouter.get('/metrics', async (_req: Request, res: Response) => {
     res.status(500).json({ error: 'Erro ao carregar métricas dos modelos', details: err.message });
   }
 });
+

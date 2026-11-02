@@ -17,3 +17,4 @@ export const config = {
   projectRoot: path.resolve(__dirname, '../../../'),
   pythonPath: path.resolve(__dirname, '../../../.venv/Scripts/python.exe'),
 };
+

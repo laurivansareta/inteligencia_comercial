@@ -189,3 +189,4 @@ export const SegmentationView: React.FC<SegmentationViewProps> = ({ onSelectCust
     </div>
   );
 };
+

@@ -19,3 +19,4 @@ echo Frontend: http://localhost:3000
 echo ======================================================================
 timeout /t 5
 start http://localhost:3000
+

@@ -159,3 +159,4 @@ export const GrowthView: React.FC<GrowthViewProps> = ({ onSelectCustomer }) => {
     </div>
   );
 };
+

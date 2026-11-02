@@ -276,3 +276,4 @@ export const ChurnView: React.FC<ChurnViewProps> = ({ onSelectCustomer }) => {
     </div>
   );
 };
+

@@ -58,3 +58,4 @@ growthRouter.post('/predict', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Erro ao gerar previsão de crescimento', details: err.message });
   }
 });
+

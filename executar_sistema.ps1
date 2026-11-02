@@ -12,3 +12,4 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd frontend; npm 
 Write-Host "`nAguardando 3 segundos para abertura do navegador..." -ForegroundColor Green
 Start-Sleep -Seconds 3
 Start-Process "http://localhost:3000"
+

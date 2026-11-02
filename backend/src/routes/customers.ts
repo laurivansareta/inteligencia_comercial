@@ -52,3 +52,4 @@ customersRouter.get('/:id', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Erro ao carregar Customer 360', details: err.message });
   }
 });
+
