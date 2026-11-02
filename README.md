@@ -1,4 +1,4 @@
-# CYCLE AI — Inteligência Comercial (Fase 1: Data Foundation)
+# CYCLE AI — Inteligência Comercial (Full Stack)
 
 Plataforma B2B SaaS de Customer Intelligence para distribuidoras e atacadistas, transformando dados comerciais e financeiros em decisões orientadas por dados e preditivas.
 
@@ -6,132 +6,142 @@ Plataforma B2B SaaS de Customer Intelligence para distribuidoras e atacadistas, 
 
 ## 1. Status do Projeto
 
-- [x] **Fase 1 — Data Foundation**: 100% Concluída e Validada.
-- [x] **Fase 2 — Machine Learning**: 100% Concluída e Validada (3 modelos treinados e persistidos).
-- [ ] **Fase 3 — Backend e Interface**: Próxima etapa (FastAPI + Streamlit).
-- [ ] **Fase 4 — Qualidade e Apresentação**: Demonstração executiva.
+- [x] **Fase 1 — Data Foundation**: 100% Concluída e Validada (PostgreSQL 16, geradores de 36 meses e conector ERP).
+- [x] **Fase 2 — Machine Learning**: 100% Concluída e Validada (K-Means, Churn com SHAP e Growth XGBoost).
+- [x] **Fase 3 — Backend e API REST**: 100% Concluída em **TypeScript** (Express, endpoints REST documentados).
+- [x] **Fase 4 — Frontend e Interface**: 100% Concluída em **React + TypeScript** (Vite, Tailwind, Recharts, 6 módulos completos).
 
 ---
 
-## 2. Estrutura de Arquivos Implementada
+## 2. Arquitetura da Solução
 
 ```text
-inteligencia_comercial/
+cycle-ai/
+├── backend/                    # API REST em TypeScript (Node.js + Express)
+│   ├── src/
+│   │   ├── config/env.ts       # Configurações de ambiente
+│   │   ├── db/index.ts         # Pool de conexões PostgreSQL (pg)
+│   │   ├── routes/             # Rotas REST (/health, /dashboard, /customers, /churn, /growth, /models)
+│   │   ├── services/           # Regras de negócio e integração aos modelos ML
+│   │   ├── types/index.ts      # Tipagens completas TypeScript
+│   │   └── index.ts            # Entrypoint do servidor HTTP (Porta 3001)
+│   ├── package.json
+│   └── tsconfig.json
+├── frontend/                   # Interface Web em React + TypeScript + Vite
+│   ├── src/
+│   │   ├── components/         # Sidebar, Header, MetricCard
+│   │   ├── pages/
+│   │   │   ├── DashboardView.tsx    # Visão Executiva & Saúde da Carteira
+│   │   │   ├── SegmentationView.tsx # Segmentação K-Means
+│   │   │   ├── ChurnView.tsx        # Ranking de Risco & Explicabilidade SHAP
+│   │   │   ├── GrowthView.tsx       # Oportunidades de Expansão (XGBoost)
+│   │   │   ├── CustomersView.tsx    # Customer 360 & Transações
+│   │   │   └── ModelsView.tsx       # Governança e Métricas dos Modelos
+│   │   ├── services/api.ts     # Cliente HTTP da API REST
+│   │   ├── types/index.ts      # Tipagens do frontend
+│   │   ├── App.tsx             # Navegação principal e estado global
+│   │   └── index.css           # Estilos globais e Tailwind v4
+│   ├── package.json
+│   └── vite.config.ts          # Proxy reverso /api -> http://localhost:3001
 ├── data/
-│   ├── generators/
-│   │   ├── company.py          # Categorias (15), Filiais (5), Vendedores (30)
-│   │   ├── products.py         # SKUs (1.500) com preços e margens realistas
-│   │   ├── customers.py        # 10.000 clientes com 6 perfis comportamentais
-│   │   ├── sales.py            # Fato Venda (36 meses, tendências e ruído)
-│   │   └── payments.py         # Fato Pagamento (prazos, atrasos e inadimplência)
-│   └── connectors/
-│       └── erp_flex.py         # Conector ERP Flex Smart (REST API e Banco PostgreSQL)
+│   ├── generators/             # Geradores de clientes, SKUs, vendas 36m e pagamentos
+│   └── connectors/             # Conector de extração do ERP Flex Smart
 ├── database/
-│   ├── schema.sql              # DDL oficial do PostgreSQL 16 com restrições e índices
-│   └── connection.py           # Gerenciador de conexão SQLAlchemy e psycopg2
+│   ├── schema.sql              # DDL oficial do PostgreSQL 16
+│   └── connection.py           # Conexão Python (SQLAlchemy/psycopg2)
 ├── ml/
-│   └── features/
-│       ├── aggregations.py     # Agregações mensais (fato_cliente_mes)
-│       └── snapshots.py        # Snapshots históricos (ml_cliente_snapshot) sem vazamento
+│   ├── segmentation/           # K-Means, seleção ótima de K e rotulação
+│   ├── churn/                  # LogisticRegression + SHAP TreeExplainer
+│   ├── growth/                 # XGBoost Regressor de Faturamento Futuro
+│   ├── evaluation/             # Métricas (F1, PR-AUC, ROC-AUC, WAPE, MAE, Silhouette)
+│   └── service_bridge.py       # Ponte de inferência em alta velocidade para o backend
+├── models/                     # Modelos treinados e serializados (.joblib e .json)
 ├── scripts/
-│   ├── generate_data.py        # Pipeline de geração e carga com seed fixa
-│   ├── load_data.py            # Operações de carga em lote e limpeza idempotente
-│   ├── import_erp_data.py      # Importação e mapeamento de dados reais do ERP
-│   └── validate_data.py        # Bateria de testes de integridade e reconciliação
-├── tests/
-│   ├── test_generators.py      # Testes unitários dos geradores
-│   └── test_data_consistency.py# Testes automatizados de consistência e reconciliação
-├── docker-compose.yml          # Container PostgreSQL 16
-├── requirements.txt            # Dependências Python fixadas
-├── .env.example                # Template de configuração
-├── .env                        # Configurações do ambiente local
-├── context.md                  # Especificação oficial do produto
-└── README.md                   # Documentação do projeto
+│   ├── generate_data.py        # Gerador sintético com seed fixa
+│   ├── train_all.py            # Pipeline de treinamento dos 3 modelos
+│   └── validate_data.py        # Validador de consistência e reconciliação
+├── tests/                      # 15 testes automatizados (pytest)
+├── EXECUTAR_SISTEMA.bat        # Inicializador 1-clique (Windows)
+├── package.json                # Scripts orquestrados de build e execução
+├── requirements.txt            # Dependências Python
+└── context.md                  # Especificação oficial do produto
 ```
 
 ---
 
-## 3. Pré-requisitos e Ambiente
+## 3. Guia Rápido de Execução
 
-- **Python**: 3.12 ou 3.13 (ambiente virtual `.venv`).
-- **PostgreSQL**: Versão 16 ativa (porta 5432) com banco `cycle_ai`.
-- **Docker** (opcional): Disponível via `docker-compose.yml`.
+### 3.1 Inicialização Rápida com 1-Clique (Windows)
+Execute o arquivo:
+```cmd
+EXECUTAR_SISTEMA.bat
+```
+Ou no PowerShell:
+```powershell
+.\executar_sistema.ps1
+```
+O sistema abrirá automaticamente o navegador em `http://localhost:3000`.
 
 ---
 
-## 4. Guia Rápido de Execução
+### 3.2 Execução Manual dos Componentes
 
-### 4.1 Configurar o Ambiente Virtual e Dependências
+#### Backend TypeScript (Porta 3001):
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\pip install -r requirements.txt
+cd backend
+npm install
+npm run dev
 ```
 
-### 4.2 Configurar o Banco de Dados
-Copie `.env.example` para `.env` e confirme os dados de conexão do PostgreSQL:
-```env
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=cycle_ai
-DB_USER=postgres
-DB_PASSWORD=postgres
-RANDOM_SEED=42
-```
-
-O schema é aplicado automaticamente ou via psql:
+#### Frontend React + TypeScript (Porta 3000):
 ```powershell
-psql -U postgres -h localhost -d cycle_ai -f database/schema.sql
+cd frontend
+npm install
+npm run dev
 ```
 
-### 4.3 Gerar Base Sintética e Snapshots de Machine Learning
-Para testes rápidos (1.000 clientes, 300 produtos):
-```powershell
-.\.venv\Scripts\python scripts/generate_data.py --test-mode
-```
+---
 
-Para geração em volume completo (10.000 clientes, 1.500 produtos, 36 meses):
-```powershell
-.\.venv\Scripts\python scripts/generate_data.py --n-customers 10000 --n-products 1500 --seed 42
-```
+## 4. Endpoints da API REST (Seção 10 do context.md)
 
-### 4.4 Validar Consistência e Reconciliação dos Dados
-```powershell
-.\.venv\Scripts\python scripts/validate_data.py
-```
-Ou executar toda a suíte de testes do `pytest`:
+| Método | Endpoint | Objetivo |
+| :--- | :--- | :--- |
+| `GET` | `/api/health` | Status de saúde da API e conexão ao PostgreSQL |
+| `GET` | `/api/dashboard` | KPIs consolidados da Visão Executiva e evolução mensal |
+| `GET` | `/api/customers` | Listagem paginada com busca, filtros de filial, segmento e risco |
+| `GET` | `/api/customers/:id` | **Customer 360** completo (cadastro, histórico e predições) |
+| `GET` | `/api/segmentation` | Perfis médios e distribuição dos clusters K-Means |
+| `GET` | `/api/churn/ranking` | Ranking de risco de abandono com probabilidades estimadas |
+| `POST` | `/api/churn/predict` | Previsão e explicabilidade individual **SHAP** para o cliente |
+| `GET` | `/api/growth/opportunities` | Ranking de potencial de crescimento incremental |
+| `POST` | `/api/growth/predict` | Previsão de faturamento futuro nos 90 dias seguintes |
+| `GET` | `/api/models/metrics` | Métricas de validação e teste de todos os modelos |
+
+---
+
+## 5. Modelos de Machine Learning e Desempenho
+
+1. **Customer Segmentation (K-Means):**
+   - **K selecionado:** 3 clusters (*Silhouette Score: 0.5533*).
+   - **Perfis:** *Campeões* (R$ 32k/90d), *Em Alerta* (R$ 1.6k/90d), *Inativos* (0 vendas/90d).
+2. **Churn Prediction (Logistic Regression Campeão):**
+   - **ROC-AUC (Teste Out-of-Time):** `0.9261`.
+   - **F1-Score:** `0.6203` | **Recall:** `92.80%` (alta sensibilidade comercial).
+   - **Explicabilidade:** Explainer **SHAP** calibrado indicando fatores que elevam e reduzem o risco.
+3. **Growth Prediction (XGBoost Regressor Campeão):**
+   - **R² Score (Teste Out-of-Time):** `0.8831`.
+   - **WAPE:** `32.71%` | **MAE:** `R$ 7.555,64`.
+   - **Potencial de Expansão:** Calculado a partir da variação positiva versus histórico recente.
+
+---
+
+## 6. Testes Automatizados
+
+Para rodar toda a suíte de testes do banco e modelos:
 ```powershell
 .\.venv\Scripts\pytest -v
 ```
-
-### 4.5 Integração e Validação com Dados Reais do ERP Existente
-Para testar a extração e mapeamento do ERP Flex Smart:
+Para testar a compilação do backend e frontend:
 ```powershell
-.\.venv\Scripts\python scripts/import_erp_data.py --mode auto
+npm run build
 ```
-
-### 4.6 Treinamento dos Modelos de Machine Learning (Fase 2)
-Para treinar os 3 modelos de forma orquestrada com divisão temporal:
-```powershell
-.\.venv\Scripts\python scripts/train_all.py
-```
-Ou individualmente por modelo:
-```powershell
-.\.venv\Scripts\python ml/segmentation/train.py
-.\.venv\Scripts\python ml/churn/train.py
-.\.venv\Scripts\python ml/growth/train.py
-```
-
----
-
-## 5. Garantias de Qualidade e Critérios de Aceite Atendidos
-
-1. **Reconciliação Financeira Estrita**:
-   - `SUM(fato_venda.valor_liquido) == SUM(fato_cliente_mes.faturamento)` (diferença R$ 0,00).
-   - `SUM(fato_venda.valor_liquido) == SUM(fato_pagamento.valor_titulo)` (diferença R$ 0,00).
-2. **Integridade Referencial**: 100% das chaves estrangeiras válidas, 0 órfãos.
-3. **Regras Temporais e Anti-Leakage**:
-   - Features calculadas exclusivamente com histórico anterior ou igual à data de referência.
-   - Labels futuros calculados exclusivamente na janela posterior de 90 dias.
-   - Ponto de referência mais recente sem janela completa (ex: 31/10/2026) possui labels estritamente `NULL` para inferência sem vazamento temporal.
-4. **Reprodutibilidade**: Geração baseada em seed fixa (`RANDOM_SEED=42`).
-

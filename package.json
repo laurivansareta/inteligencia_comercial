@@ -1,0 +1,14 @@
+{
+  "name": "cycle-ai",
+  "version": "1.0.0",
+  "description": "CYCLE AI - Plataforma B2B SaaS de Customer Intelligence",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "test:ml": ".\\.venv\\Scripts\\pytest -v",
+    "start:backend": "npm --prefix backend run start"
+  }
+}
