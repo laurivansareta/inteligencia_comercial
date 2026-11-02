@@ -6,8 +6,11 @@ __pycache__/
 env/
 venv/
 *.egg-info/
+# Node.js
+node_modules/
 dist/
 build/
+.npm/
 
 # Environment & Credentials
 .env
