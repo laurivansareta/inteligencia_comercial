@@ -1,0 +1,102 @@
+{
+  "model_type": "KMeans",
+  "best_k": 3,
+  "features": [
+    "recency_days",
+    "frequency_90d",
+    "revenue_90d",
+    "avg_ticket_90d",
+    "category_diversity",
+    "avg_days_between_orders",
+    "late_payment_rate"
+  ],
+  "log_transform_features": [
+    "revenue_90d",
+    "avg_ticket_90d",
+    "frequency_90d"
+  ],
+  "silhouette_score": 0.5533,
+  "evaluations_by_k": {
+    "3": {
+      "silhouette_score": 0.5533,
+      "davies_bouldin_score": 0.8218,
+      "cluster_distribution": {
+        "0": 667,
+        "1": 126,
+        "2": 207
+      }
+    },
+    "4": {
+      "silhouette_score": 0.5508,
+      "davies_bouldin_score": 0.7974,
+      "cluster_distribution": {
+        "0": 670,
+        "1": 72,
+        "2": 179,
+        "3": 79
+      }
+    },
+    "5": {
+      "silhouette_score": 0.4003,
+      "davies_bouldin_score": 0.8418,
+      "cluster_distribution": {
+        "0": 312,
+        "1": 72,
+        "2": 413,
+        "3": 78,
+        "4": 125
+      }
+    },
+    "6": {
+      "silhouette_score": 0.4049,
+      "davies_bouldin_score": 0.7665,
+      "cluster_distribution": {
+        "0": 413,
+        "1": 124,
+        "2": 70,
+        "3": 27,
+        "4": 312,
+        "5": 54
+      }
+    }
+  },
+  "cluster_names": {
+    "0": "Campeões (Alto Faturamento & Frequência)",
+    "1": "Inativos ou Baixo Engajamento",
+    "2": "Clientes em Alerta / Desacelerando"
+  },
+  "cluster_profiles": {
+    "0": {
+      "recency_days": 8.89,
+      "frequency_90d": 12.9,
+      "revenue_90d": 32424.03,
+      "avg_ticket_90d": 1786.15,
+      "category_diversity": 14.44,
+      "avg_days_between_orders": 9.75,
+      "late_payment_rate": 0.13
+    },
+    "1": {
+      "recency_days": 182.62,
+      "frequency_90d": 0.0,
+      "revenue_90d": 0.0,
+      "avg_ticket_90d": 0.0,
+      "category_diversity": 1.79,
+      "avg_days_between_orders": 164.13,
+      "late_payment_rate": 0.48
+    },
+    "2": {
+      "recency_days": 47.62,
+      "frequency_90d": 1.71,
+      "revenue_90d": 1688.38,
+      "avg_ticket_90d": 665.73,
+      "category_diversity": 7.71,
+      "avg_days_between_orders": 40.73,
+      "late_payment_rate": 0.34
+    }
+  },
+  "cluster_distribution": {
+    "0": 667,
+    "1": 126,
+    "2": 207
+  }
+}

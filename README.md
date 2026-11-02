@@ -7,8 +7,8 @@ Plataforma B2B SaaS de Customer Intelligence para distribuidoras e atacadistas, 
 ## 1. Status do Projeto
 
 - [x] **Fase 1 — Data Foundation**: 100% Concluída e Validada.
-- [ ] **Fase 2 — Machine Learning**: Próxima etapa (após validação pelo usuário).
-- [ ] **Fase 3 — Backend e Interface**: FastAPI + Streamlit.
+- [x] **Fase 2 — Machine Learning**: 100% Concluída e Validada (3 modelos treinados e persistidos).
+- [ ] **Fase 3 — Backend e Interface**: Próxima etapa (FastAPI + Streamlit).
 - [ ] **Fase 4 — Qualidade e Apresentação**: Demonstração executiva.
 
 ---
@@ -107,6 +107,18 @@ Ou executar toda a suíte de testes do `pytest`:
 Para testar a extração e mapeamento do ERP Flex Smart:
 ```powershell
 .\.venv\Scripts\python scripts/import_erp_data.py --mode auto
+```
+
+### 4.6 Treinamento dos Modelos de Machine Learning (Fase 2)
+Para treinar os 3 modelos de forma orquestrada com divisão temporal:
+```powershell
+.\.venv\Scripts\python scripts/train_all.py
+```
+Ou individualmente por modelo:
+```powershell
+.\.venv\Scripts\python ml/segmentation/train.py
+.\.venv\Scripts\python ml/churn/train.py
+.\.venv\Scripts\python ml/growth/train.py
 ```
 
 ---

@@ -1,0 +1,81 @@
+{
+  "model_type": "XGBoost",
+  "features": [
+    "recency_days",
+    "frequency_30d",
+    "frequency_90d",
+    "frequency_180d",
+    "revenue_30d",
+    "revenue_90d",
+    "revenue_180d",
+    "revenue_365d",
+    "avg_ticket_90d",
+    "revenue_variation_90d",
+    "frequency_variation_90d",
+    "avg_days_between_orders",
+    "category_diversity",
+    "avg_payment_delay",
+    "late_payment_rate"
+  ],
+  "train_dates": [
+    "2024-12-31",
+    "2025-06-30"
+  ],
+  "validation_date": "2025-12-31",
+  "test_date": "2026-06-30",
+  "comparison_results": {
+    "RidgeRegression": {
+      "validation_metrics": {
+        "mae": 8606.19,
+        "rmse": 16747.07,
+        "r2_score": 0.8696,
+        "wape": 0.3666
+      }
+    },
+    "RandomForest": {
+      "validation_metrics": {
+        "mae": 7801.15,
+        "rmse": 16170.14,
+        "r2_score": 0.8784,
+        "wape": 0.3323
+      }
+    },
+    "XGBoost": {
+      "validation_metrics": {
+        "mae": 7694.0,
+        "rmse": 16418.8,
+        "r2_score": 0.8746,
+        "wape": 0.3277
+      },
+      "test_metrics": {
+        "mae": 7555.64,
+        "rmse": 15359.4,
+        "r2_score": 0.8831,
+        "wape": 0.3271
+      }
+    }
+  },
+  "final_test_metrics": {
+    "mae": 7555.64,
+    "rmse": 15359.4,
+    "r2_score": 0.8831,
+    "wape": 0.3271
+  },
+  "feature_importances": {
+    "recency_days": 0.0037,
+    "frequency_30d": 0.0034,
+    "frequency_90d": 0.0059,
+    "frequency_180d": 0.0053,
+    "revenue_30d": 0.0123,
+    "revenue_90d": 0.0078,
+    "revenue_180d": 0.6457,
+    "revenue_365d": 0.1403,
+    "avg_ticket_90d": 0.1248,
+    "revenue_variation_90d": 0.0083,
+    "frequency_variation_90d": 0.0062,
+    "avg_days_between_orders": 0.0014,
+    "category_diversity": 0.0011,
+    "avg_payment_delay": 0.0079,
+    "late_payment_rate": 0.0261
+  }
+}
