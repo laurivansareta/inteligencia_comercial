@@ -48,7 +48,11 @@ class MLService {
       const { stdout } = await execFileAsync(
         config.pythonPath,
         [scriptPath, '--action', 'score_all'],
-        { maxBuffer: 50 * 1024 * 1024 }
+        {
+          maxBuffer: 50 * 1024 * 1024,
+          encoding: 'utf-8',
+          env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
+        }
       );
 
       const records = JSON.parse(stdout);
@@ -70,7 +74,11 @@ class MLService {
       const { stdout } = await execFileAsync(
         config.pythonPath,
         [scriptPath, '--action', 'explain_one', '--customer-id', customerId.toString()],
-        { maxBuffer: 10 * 1024 * 1024 }
+        {
+          maxBuffer: 10 * 1024 * 1024,
+          encoding: 'utf-8',
+          env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
+        }
       );
       return JSON.parse(stdout);
     } catch (err) {

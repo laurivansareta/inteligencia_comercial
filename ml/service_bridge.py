@@ -6,6 +6,13 @@ Churn (com explicabilidade SHAP) e Growth com máxima performance e confiabilida
 
 import sys
 import os
+
+# Garantir codificação UTF-8 padrão para I/O no Windows
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import json
